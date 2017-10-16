@@ -28,6 +28,8 @@ RUN java -Xmx2048M -Xms1024M -jar universal.jar
 RUN sed -e "s/eula=false/eula=true/g" eula.txt > aaa.txt
 RUN mv aaa.txt eula.txt
 
+ADD server.properties /data/
+
 # mods
 
 # 25565 is for minecraft
