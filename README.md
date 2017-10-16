@@ -1,10 +1,18 @@
+Docker for minecraft forge
+====================
 
-# build
+Build
+--------------------
+
 ```
-sudo docker build -t minecraft-forge
+git clone git@github.com:kuniiskywalker/docker-minecraft-forge.git
+cd docker-minecraft-forge
+docker build -t kuniiskywalker/docker-minecraft-forge .
 ```
 
-# run
+Run
+--------------------
+
 ```
-sudo docker run -p 25565:25565 -d minecraft-forge
+docker run -p 25565:25565 -v /volume:/data/world -d kuniiskywalker/docker-minecraft-forge
 ```

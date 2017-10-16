@@ -1,7 +1,8 @@
 # Base system is the LTS version of Ubuntu.
 FROM   ubuntu:14.04 
+
 # update package
-RUN apt-get update
+RUN apt-get update -y
 
 RUN apt-get install -y wget
 
@@ -12,13 +13,13 @@ RUN    echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-se
        echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections  && \
        apt-get --yes install curl oracle-java8-installer ; apt-get clean
 
-RUN mkdir /forge
+RUN mkdir -m 777 /data
 
-WORKDIR /forge
+WORKDIR /data
 
-RUN wget -O "/forge/installer.jar" 'http://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12-14.21.1.2415/forge-1.12-14.21.1.2415-installer.jar'
+RUN wget -O "/data/installer.jar" 'http://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.0.2512/forge-1.12.2-14.23.0.2512-installer.jar'
 
-RUN wget -O "/forge/universal.jar" 'http://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12-14.21.1.2415/forge-1.12-14.21.1.2415-universal.jar'
+RUN wget -O "/data/universal.jar" 'http://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.0.2512/forge-1.12.2-14.23.0.2512-universal.jar'
 
 RUN java -jar ./installer.jar nogui --installServer
 
@@ -27,10 +28,9 @@ RUN java -Xmx2048M -Xms1024M -jar universal.jar
 RUN sed -e "s/eula=false/eula=true/g" eula.txt > aaa.txt
 RUN mv aaa.txt eula.txt
 
+# mods
+
 # 25565 is for minecraft
 EXPOSE 25565
-
-# /data contains static files and database
-VOLUME ["/data"]
 
 CMD ["java", "-Xmx2048M", "-Xms1024M", "-jar", "universal.jar"]
